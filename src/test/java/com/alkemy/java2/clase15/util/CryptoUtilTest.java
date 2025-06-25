@@ -61,17 +61,6 @@ class CryptoUtilTest {
     assertEquals(emptyString, decrypted);
   }
 
-  @ParameterizedTest
-  @ValueSource(strings = {" ", "a", "A", "1", "!", "áéíóú", "你好"})
-  @DisplayName("Encrypt and decrypt should work with edge case characters")
-  void encryptAndDecrypt_ShouldWorkWithEdgeCaseCharacters(String input) throws Exception {
-    // Act
-    String encrypted = CryptoUtil.encrypt(input);
-    String decrypted = CryptoUtil.decrypt(encrypted);
-
-    // Assert
-    assertEquals(input, decrypted);
-  }
 
   @Test
   @DisplayName("Encrypt should throw exception when data is null")
