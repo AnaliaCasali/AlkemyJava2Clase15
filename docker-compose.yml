@@ -1,0 +1,42 @@
+services:
+  spring-api-image:
+    image: spring-api-image
+    container_name: spring-clase15-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - spring-network
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://user:pass@mongodb:27017/tienda?authSource=admin
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb-container
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+      - MONGO_INITDB_DATABASE=tienda
+    ports:
+      - "27019:27017"
+    networks:
+      - spring-network
+    volumes:
+      - data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 30s
+      retries: 10
+
+networks:
+  spring-network:
+    driver: bridge
+
+volumes:
+  data:

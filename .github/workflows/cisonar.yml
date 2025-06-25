@@ -1,0 +1,33 @@
+name: CI Java Test Workflow with JaCoCo & Sonar
+on:
+  push:
+    branches:
+      - main  # Solo se activará en pushes a la rama "unitTest"
+
+env:
+  SONAR_PROJECT_KEY: AlkemyJava2Clase15
+  SONAR_ORG: analiacasali
+  SONAR_HOST_URL: https://sonarcloud.io
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set execute permission for mvnw
+        run: chmod +x mvnw
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Run SonarQube analysis
+        run: |
+          ./mvnw clean verify sonar:sonar \
+            -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+            -Dsonar.organization=$SONAR_ORG \
+            -Dsonar.host.url=$SONAR_HOST_URL \
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
