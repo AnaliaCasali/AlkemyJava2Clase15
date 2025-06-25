@@ -86,5 +86,12 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    // Métodos para el manejo de contraseñas
+    public String hashPassword(String password) {
+        return passwordEncoder.encode(password);
+    }
 
+    public boolean validatePassword(String rawPassword, String hashedPassword) {
+        return passwordEncoder.matches(rawPassword, hashedPassword);
+    }
 }

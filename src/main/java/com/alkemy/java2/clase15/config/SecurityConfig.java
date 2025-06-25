@@ -111,12 +111,13 @@ public class SecurityConfig {
   public AuthenticationProvider authProvider() {
     var provider = new DaoAuthenticationProvider();
     provider.setUserDetailsService(userDetailsService);
-    provider.setPasswordEncoder(new BCryptPasswordEncoder());
+    provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
     return provider;
   }
 
   @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
+  public PasswordEncoder passwordEncoder()
+  {
+    return new BCryptPasswordEncoder(12);
   }
 }
